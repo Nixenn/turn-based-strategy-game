@@ -1,9 +1,10 @@
 from random import randint
-from game2lib import charGen
+from game2lib import charGen # game2lib.py is the library i made for this
 
-turn = randint(1, 2)
-rounds = 0
-game = -1
+turn = randint(1, 2) # effectively a dice roll to decide who goes first
+rounds = 0 # each time a player makes a choice there is 1 added to this value
+# it technically should be +1 round every time both players make their choice but whatever
+game = -1 # this is changed when one or more characters are below 0 hp (determines winner)
 
 
 # This function is defined in the main code as it was hell to code from-
@@ -13,7 +14,7 @@ def yourTurn(char_name, turn):
 
     pick = 0
     print(f"{char_name}'s turn!")
-    while pick not in [1, 2, 3, 4, 5]:
+    while pick not in [1, 2, 3, 4, 5]: # this is the players choice of action
         pick = int(
             input(
                 """
@@ -70,13 +71,13 @@ else:
     diff_atk = randint(5, 25)
 while char1_hp > 0 and char2_hp > 0:
     rounds += 1
-    if char1_luck > 1000:
+    if char1_luck > 1000: # refer to game2lib.pick_Luigi()
         char1_hp += 250
         char1_atk += 150
         print(
             f"{char1_name}'s stats have been boosted! They received an extra 250 hp and 150 atk"
         )
-    elif char2_luck > 1000:
+    elif char2_luck > 1000: # refer to game2lib.pick_Luigi()
         char2_hp += 250
         char2_atk += 150
         print(
@@ -88,17 +89,22 @@ while char1_hp > 0 and char2_hp > 0:
     else:
         yourTurn(char2_name, turn)
         turn -= 1
-    if char1_hp < 0:
+    if char1_hp < 0: # winner determinant
         game = 2
         break
     elif char2_hp < 0:
         game = 1
         break
+    elif char1_hp < 0 and char2_hp < 0:
+        game = 3
+        break
+    else:
+        continue
 if game == 1:
     print(f"{char1_name} won the game with {char1_hp}hp remaining.")
 elif game == 2:
     print(f"{char2_name} won the game with {char2_hp}hp remaining.")
-else:
+else: # temp debug, should be removed before release
     print(
         f"""Something broke, you shouldn't be here.
         {char1_name} {char2_name}
