@@ -31,6 +31,6 @@ Speed: 12
 - The stats menu eats your turn. 
 	- Yeah I just couldn't figure this one out, sorry.
 - Typing a non integer (a number without letters) during your turn crashes the game
-	- This means that, if you aren't using an IDE to run the game, the window will close instantly. Your game isn't corrupted.
+	- This means that, if you aren't using an IDE to run the game, the window will close instantly. Your game isn't corrupted.<br/>
 -- EXTRA -- 
 - If you need to contact me, my Discord handle is @.1aria.
