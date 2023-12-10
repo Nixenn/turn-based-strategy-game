@@ -1,3 +1,6 @@
+## turn-based-strategy-game
+### yeah (we still don't have a name)
+
 If you change the name of 'game2lib.py', the game will break.
 The custom functions for this game are stored in here:
 This means that game needs to read from 'game2lib.py' in order to work.
@@ -29,3 +32,5 @@ The stats menu eats your turn.
 	- Yeah I just couldn't figure this one out, sorry.
 Typing a non integer (a number without letters) during your turn crashes the game
 	- This means that, if you aren't using an IDE to run the game, the window will close instantly. Your game isn't corrupted.
+-- EXTRA -- 
+If you need to contact me, my Discord handle is @.1aria.
