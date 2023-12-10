@@ -8,8 +8,8 @@ Thank you so much, and enjoy playing!
 -- GUIDE --
 
 : Attacking :
-Attacking is simple. You chose it and you deal a random amount of damage within a predetermined range.
-Defending is also simple. You chose it and your defence goes up. It's a bit broken, but not really.
+Attacking is simple. You choose it and you deal a random amount of damage within a predetermined range.
+Defending is also simple. You choose it and your defence goes up. It's a bit broken, but not really.
 The item list can be accessed, but does nothing. Maybe at a later date.
 Passing. Luigi is with you on this one.
 -- Stats --
