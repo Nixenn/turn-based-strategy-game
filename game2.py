@@ -5,6 +5,30 @@ turn = randint(1, 2)
 rounds = 0
 game = -1
 pick = 0
+# pva = input("Choose between '2player' and 'vai' to play with a friend or against a computer (NOT YET IMPLEMENTED)")
+print("\n(3. Item:) does nothing currently. sorry")
+print("-- Character 1 creation --")
+(
+    char1_hp,
+    char1_atk,
+    char1_name,
+    char1_speed,
+    char1_defence,
+    char1_luck,
+    char1_species,
+) = charGen()
+print("-- Character 2 creation --")
+(
+    char2_hp,
+    char2_atk,
+    char2_name,
+    char2_speed,
+    char2_defence,
+    char2_luck,
+    char2_species,
+) = charGen()
+char1_defence1 = char1_defence
+char2_defence1 = char2_defence
 
 
 # This function is defined in the main code as it was hell to code from-
@@ -26,30 +50,59 @@ def yourTurn(char_name):
                 You choose:"""
             )
         )
+
         if pick == 1:
-            char1_hp, char2_hp, turn = pick_attack()
-            # char1_name, char2_name, char1_atk, char2_atk, char1_hp, char2_hp, turn):
+            global char1_hp, char2_hp, char1_defence1, char2_defence1, char1_speed, char2_speed, turn
+            char1_hp, char2_hp, turn = pick_attack(
+                char1_name,
+                char2_name,
+                char1_atk,
+                char2_atk,
+                char1_hp,
+                char2_hp,
+                char1_defence1,
+                char2_defence1,
+                char1_speed,
+                char2_speed,
+                turn,
+            )
         elif pick == 2:
             if turn == 1:
-                char1_defence, turn = pick_defend()
-                # char1_defence, char1_hp, char2_atk, char1_name, turn):
+                global char1_defence
+                char1_defence = pick_defend(char1_defence, char1_name)
             else:
-                char2_defence, turn = pick_defend()
-                # char2_defence, char2_hp, char1_atk, char2_name, turn):
+                global char2_defence
+                char2_defence = pick_defend(char2_defence, char2_name)
         elif pick == 3:
-            pick_item(turn)
+            pick_item()
         elif pick == 4:
             if turn == 1:
-                char1_luck, turn = pick_luigi()
-                # char1_luck, turn)
+                global char1_luck
+                char1_luck = pick_luigi(char1_luck)
             else:
-                char2_luck, turn = pick_luigi()
-                # char2_luck, turn)
+                global char2_luck
+                char2_luck = pick_luigi(char2_luck)
         elif pick == 5:
             if turn == 1:
-                pick_stats(char1_hp, char1_defence, char1_luck, char1_name)
+                pick_stats(
+                    char1_hp,
+                    char1_defence,
+                    char1_luck,
+                    char1_name,
+                    char1_atk,
+                    char1_speed,
+                    char1_species,
+                )
             else:
-                pick_stats(char2_hp, char2_defence, char2_luck, char2_name)
+                pick_stats(
+                    char2_hp,
+                    char2_defence,
+                    char2_luck,
+                    char2_name,
+                    char2_atk,
+                    char2_speed,
+                    char2_species,
+                )
         else:
             continue
         return (
@@ -63,41 +116,39 @@ def yourTurn(char_name):
         )
 
 
-print("(3. Item:) and (4. Pass:) don't work currently. sorry")
-print("-- Character 1 creation --")
-char1_hp, char1_atk, char1_name, char1_speed, char1_defence, char1_luck = charGen()
-print("-- Character 2 creation --")
-char2_hp, char2_atk, char2_name, char2_speed, char2_defence, char2_luck = charGen()
-# if char1_atk > char2_atk:
-#    diff_atk = char1_atk - char2_atk
-# elif char1_atk < char2_atk:
-#    diff_atk = char2_atk - char1_atk
-# else:
-#    diff_atk = randint(5, 25)
 while char1_hp > 0 and char2_hp > 0:
+    if char1_luck > 99:
+        char1_defence += 99999
+        char1_atk -= randint(0, 250)
+    if char2_luck > 99:
+        char2_speed += 99999
+        char2_defence += randint(-10, 30)
     rounds += 1
     if turn == 1:
-        pick = yourTurn(char1_name)
+        yourTurn(char1_name)
+        turn = 2
     else:
         yourTurn(char2_name)
-        turn -= 1
+        turn = 1
     if char1_hp < 0:
         game = 2
         break
     elif char2_hp < 0:
         game = 1
         break
+    elif char1_hp < 0 and char2_hp < 0:
+        game = 3
+        break
+    else:
+        continue
 if game == 1:
     print(f"{char1_name} won the game with {char1_hp}hp remaining.")
 elif game == 2:
     print(f"{char2_name} won the game with {char2_hp}hp remaining.")
-else:
+elif game == 3:
     print(
-        f"""Something broke, you shouldn't be here.
-        {char1_name} {char2_name}
-        {char1_hp} {char2_hp}
-        {char1_atk} {char2_atk}
-        {char1_defence} {char2_defence}
-        {char1_speed} {char2_speed}
-        {char1_luck} {char2_luck}"""
+        f"""Both characters died. What a shame.
+          {char1_name} had {char1_hp}hp
+          {char2_name} had {char2_hp}hp
+          This might be a bug. Please report it on github."""
     )
