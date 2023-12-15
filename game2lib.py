@@ -11,15 +11,21 @@ def charGen():
     )
     health = randint(randint(140, 160), randint(190, 210))
     attack = randint(randint(15, 25), randint(30, 40))
-    defence = randint(randint(45, 70), randint(90, 130))
-    speed = randint(randint(45, 70), randint(90, 130))
-    luck = randint(1, 1000) // 10
+    defence = randint(randint(25, 30), randint(40, 65))
+    speed = randint(randint(30, 50), randint(50, 100))
+    luck1 = randint(1, 1000)
+    if luck1 == 1000:
+        luck2 = randint(1, 1000)
+        if luck2 == 1000:
+            luck = 100
+    else:
+        luck = (randint(1, 100) + randint(1, 100)) // 2
     if species == "tank":
-        defence *= 2
-        speed *= 0.5
+        defence += 30
+        speed *= 0.35
     elif species == "light":
-        defence *= 0.5
-        speed *= 2
+        defence *= 0.35
+        speed += 20
     print(
         f"""
 -- Stats --
@@ -46,13 +52,15 @@ def pick_attack(
     char2_defence,
     char1_speed,
     char2_speed,
+    state_defend1,
+    state_defend2,
     turn,
 ):
     from random import randint
 
     if turn == 2:
-        if char1_speed > randint(randint(45, 70), randint(90, 130)):
-            if randint(1, 2) == turn:
+        if char1_speed > randint(40, 75):
+            if randint(1, 4) == turn:
                 print(
                     f"""{char1_name} dodges the attack!
                     They take no damage, how unfortunate for {char2_name}!"""
@@ -60,39 +68,57 @@ def pick_attack(
                 turn = 1
                 return char1_hp, char2_hp, turn
     elif turn == 1:
-        if char2_speed > randint(randint(45, 70), randint(90, 130)):
-            if randint(1, 2) == turn:
+        if char2_speed > randint(40, 75):
+            if randint(1, 4) == turn:
                 print(
                     f"""{char2_name} dodges the attack!
                     They take no damage. Better luck next time {char2_name}!"""
                 )
                 turn = 2
                 return char1_hp, char2_hp, turn
-    diff_atk = randint(randint(17, 25), randint(35, 59))
+    diff_atk1 = char1_atk + randint(-5, 8)
+    damage_dealt1 = diff_atk1 // (char2_defence // 10)
+    diff_atk2 = char2_atk + randint(-5, 8)
+    damage_dealt2 = diff_atk2 // (char1_defence // 10)
     if turn == 1:
-        char2_hp = char2_hp - (diff_atk // (char2_defence // 8))
+        char2_hp = char2_hp - (diff_atk1 * (char2_defence // 100))
+        char2_defence -= state_defend2 * 30
+        state_defend2 = 0
         print(
-            f"{char1_name} attacks {char2_name} for {diff_atk} damage! {char2_name} has {char2_hp} health remaining!"
+            f"{char1_name} attacks {char2_name} for {damage_dealt1} damage!"
+            f" {char2_name} has {char2_hp} health remaining!"
         )
         turn = 2
         return char1_hp, char2_hp, turn
     elif turn == 2:
-        char1_hp = char1_hp - (diff_atk // (char1_defence // 8))
+        char1_hp = char1_hp - (diff_atk2 * (char1_defence // 100))
+        char1_defence -= state_defend1 * 30
+        state_defend1 = 0
         print(
-            f"{char2_name} attacks {char1_name} for {diff_atk} damage! {char1_name} has {char1_hp} health remaining!"
+            f"{char2_name} attacks {char1_name} for {damage_dealt2} damage!"
+            f" {char1_name} has {char1_hp} health remaining!"
         )
         turn = 1
         return char1_hp, char2_hp, turn
-    return char1_hp, char2_hp, turn
+    return (
+        char1_hp,
+        char2_hp,
+        state_defend1,
+        state_defend2,
+        char1_defence,
+        char2_defence,
+        turn,
+    )
 
 
 # Player chose to defend:
-def pick_defend(char1_defence, char1_name):
-    char1_defence = (char1_defence * 1.2) // 1
+def pick_defend(char1_defence, char1_name, state_defend):
+    char1_defence += 30
+    state_defend += 1
     print(
         f"{char1_name} is defending themselves! Their defence is increased to {char1_defence}"
     )
-    return char1_defence
+    return char1_defence, state_defend
 
 
 # Player chose to see their item list: (unfinished)

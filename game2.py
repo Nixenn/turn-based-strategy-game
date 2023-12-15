@@ -1,6 +1,10 @@
 from random import randint
 from game2lib import charGen
 
+state_defend1 = 0
+state_defend2 = 0
+state_pass1 = 0
+state_pass2 = 0
 turn = randint(1, 2)
 rounds = 0
 game = -1
@@ -27,8 +31,6 @@ print("-- Character 2 creation --")
     char2_luck,
     char2_species,
 ) = charGen()
-char1_defence1 = char1_defence
-char2_defence1 = char2_defence
 
 
 # This function is defined in the main code as it was hell to code from-
@@ -50,10 +52,18 @@ def yourTurn(char_name):
                 You choose:"""
             )
         )
-
+        global char1_hp, char2_hp, char1_defence1, char2_defence1
+        global char1_speed, char2_speed, state_defend1, state_defend2, turn
         if pick == 1:
-            global char1_hp, char2_hp, char1_defence1, char2_defence1, char1_speed, char2_speed, turn
-            char1_hp, char2_hp, turn = pick_attack(
+            (
+                char1_hp,
+                char2_hp,
+                state_defend1,
+                state_defend2,
+                char1_defence,
+                char2_defence,
+                turn,
+            ) = pick_attack(
                 char1_name,
                 char2_name,
                 char1_atk,
@@ -64,15 +74,21 @@ def yourTurn(char_name):
                 char2_defence1,
                 char1_speed,
                 char2_speed,
+                state_defend1,
+                state_defend2,
                 turn,
             )
         elif pick == 2:
             if turn == 1:
-                global char1_defence
-                char1_defence = pick_defend(char1_defence, char1_name)
+                # global char1_defence1, state_defend1
+                char1_defence, state_defend1 = pick_defend(
+                    char1_defence1, char1_name, state_defend1
+                )
             else:
-                global char2_defence
-                char2_defence = pick_defend(char2_defence, char2_name)
+                # global char2_defence1, state_defend2
+                char2_defence, state_defend2 = pick_defend(
+                    char2_defence, char2_name, state_defend2
+                )
         elif pick == 3:
             pick_item()
         elif pick == 4:
@@ -117,11 +133,13 @@ def yourTurn(char_name):
 
 
 while char1_hp > 0 and char2_hp > 0:
+    char1_defence1 = char1_defence
+    char2_defence1 = char2_defence
     if char1_luck > 99:
         char1_defence += 99999
         char1_atk -= randint(0, 250)
     if char2_luck > 99:
-        char2_speed += 99999
+        char2_atk -= 99999
         char2_defence += randint(-10, 30)
     rounds += 1
     if turn == 1:
