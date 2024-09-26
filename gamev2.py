@@ -62,7 +62,7 @@ def character_creation():
     elif armour == 2 or armour == "2":
         armour = 2
         luck += 1
-        atk += 5
+        atk += 2
         defence += 35
         print("This set is lighter than plate. It's less resistant as a result, \
 but you can move around a bit better.")
@@ -81,20 +81,20 @@ but you can move around a bit better.")
                     Your choice (leave blank for none)\n> """)
     if weapon == 1 or weapon == "1":
         weapon = 1
-        atk += 5
+        atk += 10
         crit = 3
         print("Slash your way to victory.")
     elif weapon == 2 or weapon == "2":
         weapon = 2
-        atk += 1
+        atk += 10
         luck += 2
-        hp = hp // 1.15
+        hp = hp // 1.25
         wtf += 1  # lol
         crit += 3
         print("...")
     elif weapon == 3 or weapon == "3":
         weapon = 3
-        atk += 3
+        atk += 8
         luck += 1
         crit += 2
         print("Distance is key.")
@@ -108,7 +108,7 @@ but you can move around a bit better.")
         print("I'm not so sure your fists will hold up against a sword.. maybe there's something \
 good about simplicity?")
 
-    # this determines whether has chosen a "class". the classes are melee, ranged, and pure.
+    # this determines whether the player has chosen a "class". the classes are melee, ranged, and pure.
     if armour == 1 and weapon == 1:
         luck -= 2
         hp // 1.15
@@ -121,7 +121,7 @@ good about simplicity?")
         luck += 1
         hp += 50
         defence += 20
-        atk += 10
+        atk += 15
         isclass = "Archer"
         # this is the ranged class, made using chainmail armour and a hunting bow.
         # this class is quite well rounded. it has better survivability than the knight,
@@ -129,6 +129,7 @@ good about simplicity?")
     elif armour == 3 and weapon == 4:
         luck = 10
         hp += 45
+        atk += 8
         defence += 10
         isclass = "Pure"
         # this is the pure class, running on 2 hours sleep, a cup of coffee, and a dream.
@@ -159,7 +160,7 @@ Attack power: {atk}""")
         armour_str = "Chainmail (+10 def)"
     elif armour == 3:
         armour_str = "None (+40hp)"
-    hp *= 1.25
+    hp *= 1.3
     hp // 1
     defence *= 1.1
     defence // 1
@@ -204,10 +205,10 @@ class characters():
         if crit == 0:
             critchance = 5
         elif crit != 0 and crit == armour2:
-            critchance = 40
+            critchance = randint(30,40
         diceroll = randint(0, 8)
         if diceroll > luck:
-            critchance: int = randint(15, 22)
+            critchance: int = randint(12, 20)
         damage_dealt = atk + (randint(1, 100) / 10)
 
         # damage modifiers (applied after initial calculation, defence goes last.)
